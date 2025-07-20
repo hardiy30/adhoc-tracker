@@ -6,7 +6,9 @@ workflows:
     scripts:
       - name: Pasang kebergantungan npm
         script: |
-          npm install
+          # Guna 'npm ci' untuk pemasangan yang lebih pantas dan boleh diharap di server.
+          # Ia memerlukan fail package-lock.json ada di dalam GitHub.
+          npm ci
       - name: Tambah platform iOS
         script: |
           # Perintah ini akan mencipta folder /ios yang diperlukan

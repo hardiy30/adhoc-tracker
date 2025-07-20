@@ -4,11 +4,12 @@ workflows:
     name: Bina Aplikasi iOS
     instance_type: mac_mini_m1 # Guna Mac Mini M1 untuk binaan
     scripts:
-      - name: Pasang kebergantungan npm
+      - name: Pasang kebergantungan dan platform iOS
         script: |
           # Guna 'npm ci' untuk pemasangan yang lebih pantas dan boleh diharap di server.
-          # Ia memerlukan fail package-lock.json ada di dalam GitHub.
           npm ci
+          # Pasang pakej iOS secara eksplisit seperti yang diminta oleh ralat binaan
+          npm install @capacitor/ios
       - name: Tambah platform iOS
         script: |
           # Perintah ini akan mencipta folder /ios yang diperlukan

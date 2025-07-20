@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Adhoc Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+        /* Custom styles */
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-100">
+
+    <!-- Authentication Interface -->
+    <div id="authApp" class="min-h-screen flex items-center justify-center bg-gray-100">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+            <div class="flex flex-col items-center mb-6">
+                <img src="https://i.postimg.cc/26RRNCC4/473830681-122134253786454139-830161813832889399-n.jpg" alt="Logo PTIS" class="h-20 w-20 rounded-full object-cover mb-4" />
+                <h1 class="text-2xl font-bold text-gray-800">Adhoc Tracker</h1>
+                <p class="text-lg text-gray-600">PTIS Daerah Sandakan</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="space-y-4">
+                <h2 class="text-xl font-semibold text-gray-800 text-center mb-4">Log Masuk</h2>
+                <div>
+                    <label for="loginEmail" class="block text-sm font-medium text-gray-700">E-mel</label>
+                    <input
+                      type="email"
+                      id="loginEmail"
+                      required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                    />
+                </div>
+                <div>
+                    <label for="loginPassword" class="block text-sm font-medium text-gray-700">Kata Laluan</label>
+                    <input
+                      type="password"
+                      id="loginPassword"
+                      required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                    />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full gradient-bg text-white py-2 px-4 rounded-md hover:opacity-90 transition duration-200"
+                >
+                    Log Masuk
+                </button>
+                <p class="text-center text-sm mt-4">
+                    Belum mempunyai akaun? <a href="#" id="showSignup" class="text-blue-600 hover:underline">Daftar Sekarang</a>
+                </p>
+                <p class="text-center text-sm">
+                    <a href="#" id="showForgotPassword" class="text-blue-600 hover:underline">Lupa Kata Laluan?</a>
+                </p>
+            </form>
+
+            <!-- Signup Form (hidden by default) -->
+            <form id="signupForm" class="space-y-4 hidden">
+                <h2 class="text-xl font-semibold text-gray-800 text-center mb-4">Daftar Akaun Baru</h2>
+                <div>
+                    <label for="signupName" class="block text-sm font-medium text-gray-700">Nama Penuh</label>
+                    <input
+                      type="text"
+                      id="signupName"
+                      required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                    />
+                </div>
+                <div>
+                    <label for="signupEmail" class="block text-sm font-medium text-gray-700">E-mel (@moe.gov.my)</label>
+                    <input
+                      type="email"
+                      id="signupEmail"
+                      required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                      pattern="^[a-zA-Z0-9._%+-]+@moe\.gov\.my$"
+                      title="Sila gunakan e-mel @moe.gov.my"
+                    />
+                </div>
+                <div>
+                    <label for="signupPassword" class="block text-sm font-medium text-gray-700"
+                      >Kata Laluan (min. 6 aksara)</label
+                    >
+                    <input
+                      type="password"
+                      id="signupPassword"
+                      required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                      minlength="6"
+                    />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full gradient-bg text-white py-2 px-4 rounded-md hover:opacity-90 transition duration-200"
+                >
+                    Daftar
+                </button>
+                <p class="text-center text-sm mt-4">
+                    Sudah mempunyai akaun? <a href="#" id="showLoginFromSignup" class="text-blue-600 hover:underline">Log Masuk</a>
+                </p>
+            </form>
+
+            <!-- Forgot Password Form (hidden by default) -->
+            <form id="forgotPasswordForm" class="space-y-4 hidden">
+                <h2 class="text-xl font-semibold text-gray-800 text-center mb-4">Lupa Kata Laluan</h2>
+                <div>
+                    <label for="forgotEmail" class="block text-sm font-medium text-gray-700">E-mel Anda</label>
+                    <input
+                      type="email"
+                      id="forgotEmail"
+                      required
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                    />
+                </div>
+                <button
+                  type="submit"
+                  class="w-full gradient-bg text-white py-2 px-4 rounded-md hover:opacity-90 transition duration-200"
+                >
+                    Hantar Pautan Reset
+                </button>
+                <p class="text-center text-sm mt-4">
+                    <a href="#" id="showLoginFromForgot" class="text-blue-600 hover:underline">Kembali ke Log Masuk</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mobile App Interface (User) -->
+    <div id="userApp" class="min-h-screen max-w-md mx-auto bg-white hidden">
+        <!-- Header -->
+        <header class="gradient-bg text-white p-4">
+            <div class="flex justify-between items-center">
+                <!-- Logo and Name -->
+                <div class="flex items-center space-x-3">
+                    <img
+                      src="https://i.postimg.cc/26RRNCC4/473830681-122134253786454139-830161813832889399-n.jpg"
+                      alt="Logo PTIS"
+                      class="h-10 w-10 rounded-full object-cover"
+                    />
+                    <h1 class="text-xl font-bold">PTIS Daerah Sandakan</h1>
+                </div>
+                <div class="text-sm text-right">
+                    <span id="currentDate" class="font-medium block"></span>
+                    <span id="displayUserName" class="text-xs opacity-75">Nama: Memuatkan...</span>
+                    <button id="logoutButton" class="text-xs text-red-200 hover:text-red-100 mt-1">Log Keluar</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard -->
+        <main class="p-4">
+            <!-- Warning Message (if attendance < 4 days) -->
+            <div
+              id="warningMessage"
+              class="hidden bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r"
+            >
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-exclamation-circle text-red-500 text-xl"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-red-700">
+                            Anda belum mencukupi sasaran 4 hari kehadiran. Sila hadiri lebih banyak
+                            program.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Stats -->
+            <div class="bg-white rounded-lg card-shadow p-6 mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Statistik Kehadiran Anda</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-blue-600">Jumlah Kehadiran (Hari)</p>
+                        <p id="totalAttendance" class="text-2xl font-bold text-blue-800">0</p>
+                    </div>
+                    <div class="bg-purple-50 p-4 rounded-lg text-center">
+                        <p class="text-sm text-purple-600">Program Terkini</p>
+                        <p id="lastProgram" class="text-lg font-bold text-purple-800">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Form -->
+            <div class="bg-white rounded-lg card-shadow p-6 mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Daftar Kehadiran</h2>
+                <form id="attendanceForm" class="space-y-4">
+                    <input type="hidden" id="recordId" />
+                    <div>
+                        <label for="programName" class="block text-sm font-medium text-gray-700">Nama Program</label>
+                        <input
+                          type="text"
+                          id="programName"
+                          required
+                          placeholder="Cth: Program Motivasi"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                        />
+                    </div>
+                    <div>
+                        <label for="startDate" class="block text-sm font-medium text-gray-700">Tarikh Mula</label>
+                        <input
+                          type="date"
+                          id="startDate"
+                          required
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                        />
+                    </div>
+                    <div>
+                        <label for="endDate" class="block text-sm font-medium text-gray-700">Tarikh Akhir</label>
+                        <input
+                          type="date"
+                          id="endDate"
+                          required
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                        />
+                    </div>
+                    <div>
+                        <label for="location" class="block text-sm font-medium text-gray-700">Tempat</label>
+                        <input
+                          type="text"
+                          id="location"
+                          required
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 p-2 border"
+                        />
+                    </div>
+                    <button
+                      type="submit"
+                      class="w-full gradient-bg text-white py-2 px-4 rounded-md hover:opacity-90 transition duration-200"
+                    >
+                        <i class="fas fa-check-circle mr-2"></i> Hantar
+                    </button>
+                </form>
+            </div>
+
+            <!-- Recent Attendance -->
+            <div class="bg-white rounded-lg card-shadow p-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Kehadiran Terkini</h2>
+                <div id="recentAttendance" class="space-y-3">
+                    <p class="text-gray-500 text-center py-4">Memuatkan rekod kehadiran...</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-50 p-4 text-center text-xs text-gray-500">
+            <p>Adhoc Tracker &copy; 2025. Data akan dihantar ke sistem admin secara automatik.</p>
+        </footer>
+    </div>
+    
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        createUserWithEmailAndPassword,
+        sendPasswordResetEmail,
+        signOut,
+        onAuthStateChanged,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+      import {
+        getFirestore,
+        collection,
+        addDoc,
+        setDoc,
+        doc,
+        deleteDoc,
+        onSnapshot,
+        query,
+        where,
+        serverTimestamp,
+        getDoc,
+        updateDoc,
+        getDocs,
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      let db;
+      let auth;
+      let appId;
+      let currentUserId;
+      let currentUserName = "";
+      let userAttendances = [];
+      const COLLECTION_NAME = "adhoc-tracker";
+
+      const authApp = document.getElementById("authApp");
+      const userApp = document.getElementById("userApp");
+      
+      const loginForm = document.getElementById("loginForm");
+      const signupForm = document.getElementById("signupForm");
+      const forgotPasswordForm = document.getElementById("forgotPasswordForm");
+
+      const showSignupBtn = document.getElementById("showSignup");
+      const showLoginFromSignupBtn = document.getElementById("showLoginFromSignup");
+      const showForgotPasswordBtn = document.getElementById("showForgotPassword");
+      const showLoginFromForgotBtn = document.getElementById("showLoginFromForgot");
+      const logoutButton = document.getElementById("logoutButton");
+
+      const programNameInput = document.getElementById("programName");
+
+      const ALLOWED_EMAIL_DOMAIN = "@moe.gov.my";
+
+      const currentDateElement = document.getElementById("currentDate");
+      currentDateElement.textContent = new Date().toLocaleDateString("ms-MY", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const firebaseConfig = {
+            apiKey: "AIzaSyA20NVAIusAeMD5ud-SRb_0fV1f6xVNKbc",
+            authDomain: "adhoc-tracker.firebaseapp.com",
+            projectId: "adhoc-tracker",
+            storageBucket: "adhoc-tracker.appspot.com",
+            messagingSenderId: "113697397664",
+            appId: "1:113697397664:web:ac5562d06321b0ae4522c5",
+          };
+          appId = firebaseConfig.projectId;
+
+          const app = initializeApp(firebaseConfig);
+          auth = getAuth(app);
+          db = getFirestore(app);
+
+          onAuthStateChanged(auth, async (user) => {
+            if (user) {
+              currentUserId = user.uid;
+              
+              const userProfileDocRef = doc(db, "artifacts", appId, "public", "data", "ft_fa_users", currentUserId);
+              const userProfileDocSnap = await getDoc(userProfileDocRef);
+
+              if (userProfileDocSnap.exists()) {
+                currentUserName = userProfileDocSnap.data().name || "Pengguna Tidak Dikenali";
+              } else {
+                currentUserName = "Pengguna Tidak Dikenali";
+              }
+              document.getElementById("displayUserName").textContent = `Nama: ${currentUserName}`;
+              
+              authApp.classList.add("hidden");
+              userApp.classList.remove("hidden");
+              
+              setupFirestoreListeners();
+            } else {
+              currentUserId = null;
+              currentUserName = "";
+              authApp.classList.remove("hidden");
+              userApp.classList.add("hidden");
+            }
+          });
+        } catch (error) {
+          console.error("Error initializing Firebase:", error);
+          showCustomAlert("Ralat semasa memulakan aplikasi.");
+        }
+      });
+
+      // --- Authentication UI Logic ---
+      showSignupBtn.addEventListener("click", (e) => { e.preventDefault(); loginForm.classList.add("hidden"); forgotPasswordForm.classList.add("hidden"); signupForm.classList.remove("hidden"); });
+      showLoginFromSignupBtn.addEventListener("click", (e) => { e.preventDefault(); signupForm.classList.add("hidden"); loginForm.classList.remove("hidden"); });
+      showForgotPasswordBtn.addEventListener("click", (e) => { e.preventDefault(); loginForm.classList.add("hidden"); signupForm.classList.add("hidden"); forgotPasswordForm.classList.remove("hidden"); });
+      showLoginFromForgotBtn.addEventListener("click", (e) => { e.preventDefault(); forgotPasswordForm.classList.add("hidden"); loginForm.classList.remove("hidden"); });
+
+      // --- Authentication Handlers ---
+      signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const name = document.getElementById("signupName").value.trim();
+        const email = document.getElementById("signupEmail").value.trim();
+        const password = document.getElementById("signupPassword").value;
+
+        if (!email.endsWith(ALLOWED_EMAIL_DOMAIN)) {
+          showCustomAlert(`Pendaftaran hanya dibenarkan untuk e-mel ${ALLOWED_EMAIL_DOMAIN}.`);
+          return;
+        }
+        if (password.length < 6) {
+          showCustomAlert("Kata laluan mesti sekurang-kurangnya 6 aksara.");
+          return;
+        }
+        try {
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          await setDoc(doc(db, "artifacts", appId, "public", "data", "ft_fa_users", userCredential.user.uid), {
+            name: name,
+            email: email,
+            totalPrograms: 0,
+            createdAt: serverTimestamp(),
+          });
+          showCustomAlert("Pendaftaran berjaya!");
+        } catch (error) {
+          showCustomAlert(error.code === 'auth/email-already-in-use' ? 'E-mel ini telah didaftarkan.' : 'Ralat pendaftaran.');
+        }
+      });
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("loginEmail").value.trim();
+        const password = document.getElementById("loginPassword").value;
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          showCustomAlert("Log masuk berjaya!");
+        } catch (error) {
+          showCustomAlert("E-mel atau kata laluan tidak sah.");
+        }
+      });
+
+      forgotPasswordForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("forgotEmail").value.trim();
+        try {
+          await sendPasswordResetEmail(auth, email);
+          showCustomAlert("Pautan set semula kata laluan telah dihantar ke e-mel anda.");
+        } catch (error) {
+          showCustomAlert("Gagal menghantar pautan. Sila pastikan e-mel betul.");
+        }
+      });
+
+      logoutButton.addEventListener("click", async () => {
+        try {
+          await signOut(auth);
+          showCustomAlert("Anda telah log keluar.");
+        } catch (error) {
+          showCustomAlert("Ralat semasa log keluar.");
+        }
+      });
+
+      // --- Firestore Data Listeners ---
+      function setupFirestoreListeners() {
+        if (!db || !currentUserId) return;
+
+        const userAttendanceQuery = query(
+          collection(db, "artifacts", appId, "public", "data", COLLECTION_NAME),
+          where("userId", "==", currentUserId)
+        );
+
+        onSnapshot(
+          userAttendanceQuery,
+          (snapshot) => {
+            userAttendances = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+            userAttendances.sort((a, b) => (b.timestamp?.toDate() || 0) - (a.timestamp?.toDate() || 0));
+            updateUserDashboard();
+          },
+          (error) => {
+            console.error("Error fetching user attendances:", error);
+            document.getElementById("recentAttendance").innerHTML =
+              '<p class="text-red-500 text-center py-4">Ralat memuatkan rekod kehadiran.</p>';
+          }
+        );
+      }
+      
+      // PEMBETULAN: Fungsi untuk mengira perbezaan hari
+      function getDayDifference(startDate, endDate) {
+          const start = new Date(startDate);
+          const end = new Date(endDate);
+          if (isNaN(start) || isNaN(end)) return 0;
+          // Reset time to midnight to count full days
+          start.setHours(0, 0, 0, 0);
+          end.setHours(0, 0, 0, 0);
+          const difference = end.getTime() - start.getTime();
+          const totalDays = Math.round(difference / (1000 * 60 * 60 * 24));
+          return totalDays + 1; // Include start day
+      }
+
+      function updateUserDashboard() {
+        const recentAttendanceList = document.getElementById("recentAttendance");
+        
+        let totalDays = 0;
+        userAttendances.forEach(att => {
+            // PEMBETULAN: Kira jumlah hari dari setiap rekod
+            totalDays += getDayDifference(att.startDate, att.endDate);
+        });
+
+        document.getElementById("totalAttendance").textContent = totalDays;
+
+        if (userAttendances.length > 0) {
+          document.getElementById("lastProgram").textContent = userAttendances[0].programName || "-";
+        } else {
+          document.getElementById("lastProgram").textContent = "-";
+        }
+
+        document.getElementById("warningMessage").classList.toggle("hidden", totalDays >= 4);
+
+        recentAttendanceList.innerHTML = "";
+        if (userAttendances.length === 0) {
+          recentAttendanceList.innerHTML = '<p class="text-gray-500 text-center py-4">Tiada rekod kehadiran</p>';
+        } else {
+          userAttendances.slice(0, 5).forEach((attendance) => {
+            const startDateValue = attendance.startDate;
+            const endDateValue = attendance.endDate;
+
+            const formattedStartDate = startDateValue && !isNaN(new Date(startDateValue))
+                ? new Date(startDateValue).toLocaleDateString("ms-MY", { day: "2-digit", month: "long", year: "numeric" })
+                : 'Tiada Tarikh';
+            
+            const formattedEndDate = endDateValue && !isNaN(new Date(endDateValue))
+                ? new Date(endDateValue).toLocaleDateString("ms-MY", { day: "2-digit", month: "long", year: "numeric" })
+                : '';
+            
+            const dateDisplay = (startDateValue === endDateValue || !endDateValue) ? formattedStartDate : `${formattedStartDate} - ${formattedEndDate}`;
+
+            const item = document.createElement("div");
+            item.className = "flex items-center justify-between p-3 bg-gray-50 rounded-lg";
+            item.innerHTML = `
+              <div>
+                  <p class="font-medium">${attendance.programName || 'Tiada Nama Program'}</p>
+                  <p class="text-sm text-gray-500">${dateDisplay} &bull; ${attendance.location || 'Tiada Lokasi'}</p>
+              </div>
+              <div class="flex space-x-2">
+                  <button class="text-blue-600 hover:text-blue-800 edit-btn" data-id="${attendance.id}"><i class="fas fa-edit"></i></button>
+                  <button class="text-red-600 hover:text-red-800 delete-btn" data-id="${attendance.id}"><i class="fas fa-trash"></i></button>
+              </div>`;
+            recentAttendanceList.appendChild(item);
+          });
+
+          document.querySelectorAll("#recentAttendance .edit-btn").forEach(b => b.addEventListener("click", (e) => editAttendance(e.currentTarget.dataset.id)));
+          document.querySelectorAll("#recentAttendance .delete-btn").forEach(b => b.addEventListener("click", (e) => confirmDelete(e.currentTarget.dataset.id)));
+        }
+      }
+
+      function editAttendance(recordId) {
+        const record = userAttendances.find((att) => att.id === recordId);
+        if (!record) return;
+
+        document.getElementById("recordId").value = recordId;
+        programNameInput.value = record.programName;
+        document.getElementById("startDate").value = record.startDate;
+        document.getElementById("endDate").value = record.endDate;
+        document.getElementById("location").value = record.location;
+        showCustomAlert("Sila kemas kini maklumat dan hantar semula.");
+      }
+
+      function confirmDelete(recordId) {
+        showCustomConfirm("Anda pasti ingin memadam rekod ini?", async () => {
+          try {
+            await deleteDoc(doc(db, "artifacts", appId, "public", "data", COLLECTION_NAME, recordId));
+            await updateUsersTotalPrograms(currentUserId);
+            showCustomAlert("Rekod berjaya dipadam.");
+          } catch (error) {
+            showCustomAlert("Ralat memadam rekod.");
+          }
+        });
+      }
+
+      document.getElementById("attendanceForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
+        if (!currentUserId) return;
+
+        const recordId = document.getElementById("recordId").value;
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
+
+        if (new Date(startDate) > new Date(endDate)) {
+            showCustomAlert("Tarikh Akhir tidak boleh lebih awal daripada Tarikh Mula.");
+            return;
+        }
+
+        const attendanceData = {
+          programName: programNameInput.value,
+          startDate: startDate,
+          endDate: endDate,
+          location: document.getElementById("location").value,
+          status: "Hadir", // PEMBETULAN: Status ditetapkan secara automatik
+          userId: currentUserId,
+          userName: currentUserName,
+          timestamp: serverTimestamp(),
+        };
+
+        try {
+          if (recordId) {
+            const docRef = doc(db, "artifacts", appId, "public", "data", COLLECTION_NAME, recordId);
+            await setDoc(docRef, attendanceData, { merge: true });
+            showCustomAlert("Kehadiran berjaya dikemas kini!");
+          } else {
+            await addDoc(collection(db, "artifacts", appId, "public", "data", COLLECTION_NAME), attendanceData);
+            showCustomAlert("Kehadiran berjaya direkodkan!");
+          }
+          await updateUsersTotalPrograms(currentUserId);
+          this.reset();
+          document.getElementById("recordId").value = "";
+        } catch (error) {
+          console.error("Error saving attendance:", error);
+          showCustomAlert("Ralat menyimpan kehadiran.");
+        }
+      });
+
+      async function updateUsersTotalPrograms(userId) {
+        try {
+          const q = query(collection(db, "artifacts", appId, "public", "data", COLLECTION_NAME), where("userId", "==", userId));
+          const querySnapshot = await getDocs(q);
+          
+          let totalDays = 0;
+          querySnapshot.forEach(doc => {
+              const data = doc.data();
+              totalDays += getDayDifference(data.startDate, data.endDate);
+          });
+
+          const userDocRef = doc(db, "artifacts", appId, "public", "data", "ft_fa_users", userId);
+          await updateDoc(userDocRef, { totalPrograms: totalDays });
+        } catch (error) {
+          console.error("Error updating user's totalPrograms:", error);
+        }
+      }
+
+      // --- UI Helper Functions ---
+      function showCustomAlert(message) {
+        const alertBox = document.createElement("div");
+        alertBox.className = "fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50";
+        alertBox.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm mx-auto">
+              <p class="text-lg font-semibold text-gray-800 mb-4">${message}</p>
+              <button id="closeAlert" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">OK</button>
+          </div>`;
+        document.body.appendChild(alertBox);
+        document.getElementById("closeAlert").addEventListener("click", () => alertBox.remove());
+      }
+
+      function showCustomConfirm(message, onConfirm) {
+        const confirmBox = document.createElement("div");
+        confirmBox.className = "fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50";
+        confirmBox.innerHTML = `
+          <div class="bg-white p-6 rounded-lg shadow-xl text-center max-w-sm mx-auto">
+              <p class="text-lg font-semibold text-gray-800 mb-4">${message}</p>
+              <div class="flex justify-center space-x-4">
+                  <button id="confirmYes" class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700">Ya</button>
+                  <button id="confirmNo" class="bg-gray-300 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-400">Tidak</button>
+              </div>
+          </div>`;
+        document.body.appendChild(confirmBox);
+        document.getElementById("confirmYes").addEventListener("click", () => { onConfirm(); confirmBox.remove(); });
+        document.getElementById("confirmNo").addEventListener("click", () => confirmBox.remove());
+      }
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "appId": "com.acolyte.adhoctracker",
+  "appName": "adhoc-tracker",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

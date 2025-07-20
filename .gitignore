@@ -1,0 +1,10 @@
+# Abaikan folder kebergantungan (dependencies)
+/node_modules
+
+# Abaikan folder binaan platform
+/android
+/ios
+
+# Fail sistem operasi
+.DS_Store
+Thumbs.db

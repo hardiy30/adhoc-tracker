@@ -24,4 +24,4 @@ workflows:
           xcodebuild build -workspace App.xcworkspace -scheme App -sdk iphonesimulator -derivedDataPath ../build
     artifacts:
       # Cari hasil binaan di sini dan sediakan untuk dimuat turun
-      - build/ios/build/Build/Products/Debug-iphonesimulator/*.app
+      - ios/build/Build/Products/Debug-iphonesimulator/*.app

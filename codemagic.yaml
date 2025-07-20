@@ -1,0 +1,24 @@
+# Fail konfigurasi untuk Codemagic
+workflows:
+  ios-app-build: # Nama aliran kerja
+    name: Bina Aplikasi iOS
+    instance_type: mac_mini_m1 # Guna Mac Mini M1 untuk binaan
+    scripts:
+      - name: Pasang kebergantungan npm
+        script: |
+          npm install
+      - name: Tambah platform iOS
+        script: |
+          # Perintah ini akan mencipta folder /ios yang diperlukan
+          npx cap add ios
+      - name: Segerakkan projek web
+        script: |
+          npx cap sync ios
+      - name: Bina aplikasi iOS untuk Simulator
+        script: |
+          # Pergi ke direktori yang betul dan bina aplikasi
+          cd ios/App
+          xcodebuild build -workspace App.xcworkspace -scheme App -sdk iphonesimulator -derivedDataPath ../build
+    artifacts:
+      # Cari hasil binaan di sini dan sediakan untuk dimuat turun
+      - build/ios/build/Build/Products/Debug-iphonesimulator/*.app
